@@ -5,9 +5,9 @@ use App\MonBeauVelo\Lib\ConnexionUtilisateur;
 use App\MonBeauVelo\Lib\MessageFlash;
 use App\MonBeauVelo\Lib\PanierSession;
 use App\MonBeauVelo\Lib\VerificationEmail;
+use App\MonBeauVelo\Modele\HTTP\Session;
 use App\MonBeauVelo\Modele\Repository\CommandeRepository;
 use App\MonBeauVelo\Modele\Repository\UtilisateurRepository;
-use App\MonBeauVelo\Modele\DataObject\Utilisateur;
 use App\MonBeauVelo\Lib\MotDePasse;
 
 class ControleurUtilisateur extends ControleurGenerique {
@@ -257,7 +257,10 @@ class ControleurUtilisateur extends ControleurGenerique {
 
 
     public static function creerDepuisFormulaire() : void {
+        $session = Session::getInstance();
         if (isset($_REQUEST['nom'], $_REQUEST['prenom'], $_REQUEST['mdp'], $_REQUEST['mdp2'], $_REQUEST['email'], $_REQUEST['adresse'], $_REQUEST['telephone'])) {
+            $session->enregistrer('form_values', $_REQUEST);
+            $_SESSION['form_values'] = $_REQUEST; // Stocker les données du formulaire
 
             // Vérifier si les deux mots de passe coïncident
             if ($_REQUEST['mdp'] !== $_REQUEST['mdp2']) {
