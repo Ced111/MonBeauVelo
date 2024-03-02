@@ -1,0 +1,85 @@
+nav ul {
+    list-style: none;
+    padding-left: 0;
+    text-align: center;
+    display:flex;
+    justify-content:center;
+}
+
+nav ul li {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+
+nav ul li:hover {
+    background-color: #c7cef5;
+}
+
+nav ul li:not(:first-child) {
+    border-left-width: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+body {
+    width: 600px;
+}
+
+footer p {
+    border: 1px solid black;
+    text-align:right;
+    /* width:600px; */
+    padding-right:1em;
+}
+
+/* Style pour l'icône */
+a img {
+    border: none; /* pour enlever les bordures qui peuvent apparaître autour des images-liens */
+    vertical-align: middle; /* pour aligner verticalement l'image avec le texte à côté si nécessaire */
+    width: 50px; /* une largeur fixe de 50 pixels */
+    height: auto; /* pour maintenir le ratio d'aspect de l'image */
+}
+a:hover img {
+    opacity: 0.7; /* effet d'opacité au survol */
+}
+
+
+/* Bootstrap alerts */
+/* https://getbootstrap.com/docs/3.4/components/#alerts */
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}

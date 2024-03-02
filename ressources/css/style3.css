@@ -1,0 +1,153 @@
+nav ul {
+    list-style: none;
+    padding-left: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+nav ul li {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+
+nav ul li a.button {
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+}
+nav ul li:hover {
+    background-color: #c7cef5;
+}
+
+nav ul li a.button:hover {
+    opacity: 0.7;
+}
+
+nav ul li a.button.admin-button {
+    background-color: white;
+}
+
+
+nav ul li:not(:first-child) {
+    border-left-width: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Style for buttons */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color:#303030 ;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Style for the "Ajouter au panier" button */
+.button.add-to-cart {
+    background-color: black;
+}
+
+/* Style for the "Retour à la liste des produits" button */
+.button.back-to-list {
+    background-color: black;
+}
+
+header {
+    background-color: #303030;
+    padding: 10px 0;
+    color: white;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #303030;
+    color: white;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+}
+
+body {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+
+}
+
+footer p {
+    text-align: center;
+    padding-right: 1em;
+}
+
+/* Style for the icon */
+a img {
+    border: none;
+    vertical-align: middle;
+    width: 50px;
+    height: auto;
+}
+
+a:hover img {
+    opacity: 0.7;
+}
+
+/* Bootstrap alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
