@@ -41,11 +41,11 @@ class ControleurProduit extends ControleurGenerique {
                 ]);
             } else {
                 MessageFlash::ajouter('danger', "La produit demandée n'existe pas.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             MessageFlash::ajouter('danger', "ID manquante.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -56,13 +56,13 @@ class ControleurProduit extends ControleurGenerique {
             // Validation des données
             if (!is_numeric($_REQUEST['prix']) || $_REQUEST['prix'] <= 0) {
                 MessageFlash::ajouter('danger', "Le prix doit être un nombre positif.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
             if (!is_numeric($_REQUEST['stock']) || $_REQUEST['stock'] < 0) {
                 MessageFlash::ajouter('danger', "Le stock doit être un nombre entier positif ou zéro.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -70,7 +70,7 @@ class ControleurProduit extends ControleurGenerique {
             $produitOriginal = $produitRepository->recupererParClePrimaire($_REQUEST['idProduit']);
             if (!$produitOriginal) {
                 MessageFlash::ajouter('danger', "Produit inexistant.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -78,14 +78,14 @@ class ControleurProduit extends ControleurGenerique {
 
             if ($produitRepository->mettreAJour($produitMiseAJour)) {
                 MessageFlash::ajouter('success', "Produit mis à jour avec succès.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=produit&action=afficherDetail&idProduit=' . $produitOriginal->getIdProduit());
+                ControleurGenerique::redirectionVersURL('controleur=produit&action=afficherDetail&idProduit=' . $produitOriginal->getIdProduit());
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la mise à jour du produit.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=produit&action=afficherFormulaireMiseAJour&idProduit=' . $produitOriginal->getIdProduit());
+                ControleurGenerique::redirectionVersURL('controleur=produit&action=afficherFormulaireMiseAJour&idProduit=' . $produitOriginal->getIdProduit());
             }
         } else {
             MessageFlash::ajouter('danger', "Données incomplètes pour la mise à jour.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=produit&action=afficherListe');
+            ControleurGenerique::redirectionVersURL('controleur=produit&action=afficherListe');
         }
     }
 
@@ -95,13 +95,13 @@ class ControleurProduit extends ControleurGenerique {
             // Validation des données
             if (!is_numeric($_REQUEST['prix']) || $_REQUEST['prix'] <= 0) {
                 MessageFlash::ajouter('danger', "Le prix doit être un nombre positif.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
             if (!is_numeric($_REQUEST['stock']) || $_REQUEST['stock'] < 0) {
                 MessageFlash::ajouter('danger', "Le stock doit être un nombre entier positif ou zéro.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -110,14 +110,14 @@ class ControleurProduit extends ControleurGenerique {
             $produitRepository = new ProduitRepository();
             if ($produitRepository->sauvegarder($nouveauProduit)) {
                 MessageFlash::ajouter('success', "Le produit a été créé avec succès.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherDetail&idProduit=' . $nouveauProduit->getIdProduit());
+                ControleurGenerique::redirectionVersURL('action=afficherDetail&idProduit=' . $nouveauProduit->getIdProduit());
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la sauvegarde du produit.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireCreation&idProduit=' . $nouveauProduit->getIdProduit());
+                ControleurGenerique::redirectionVersURL('action=afficherFormulaireCreation&idProduit=' . $nouveauProduit->getIdProduit());
             }
         } else {
             MessageFlash::ajouter('danger', "Données incomplètes.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -129,14 +129,14 @@ class ControleurProduit extends ControleurGenerique {
 
             if ($repository->supprimer($idProduit)) {
                 MessageFlash::ajouter('success', "Le produit a bien été supprimé !");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la suppression du produit.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             MessageFlash::ajouter('danger', "ID produit manquant.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -151,7 +151,7 @@ class ControleurProduit extends ControleurGenerique {
             // Si aucun produit trouvé, affichez un message flash et redirigez
             if (!$produit) {
                 MessageFlash::ajouter('danger', "Aucun produit trouvé avec cet ID.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
 
             // Si un produit est trouvé, appelez la vue de détail avec le paramètre $produit
@@ -163,7 +163,7 @@ class ControleurProduit extends ControleurGenerique {
             ]);
         } else {
             MessageFlash::ajouter('danger', "ID produit non fourni.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 

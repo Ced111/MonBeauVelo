@@ -41,5 +41,5 @@
 
 <div style="margin-top: 20px;">
     <a class='button back-to-list' href="controleurFrontal.php?controleur=Produit&action=afficherListe">Continuer vos achats</a>
-    <a class='button back-to-list' href="controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireConnexion">Créer un compte pour sauver votre commande !</a>
+    <a class='button back-to-list' href="controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireCreation">Créer un compte pour sauver votre commande !</a>
 </div>

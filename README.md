@@ -1,12 +1,13 @@
 # MonBeauVelo - Projet PHP
 
 ## Informations Générales
-- **Nom du Projet**: MonBeauVelo
-- **Classe**: Q4
-- **Université**: IUT Montpellier-Sète
-- **Année Universitaire**: 2023-2024
-- **Étudiants**:
-    - Raphael Prevost
+- **Nom du Projet** : MonBeauVelo
+- **Université** : IUT Montpellier-Sète
+- **Formation** : BUT Information 2nd année
+- **Parcours** : IAMSI (Intégration d'applications management du système d'information)
+- **Année Universitaire** : 2023-2024
+- **Étudiants** :
+    - Raphael P******
     - Leretour Cedric
 
 ## Accès et lancement du Site Web
@@ -52,10 +53,3 @@ Les administrateurs sont nommés exclusivement par le super administrateur, seul
 - **Sécurité** :
     - Hashage des mots de passe. (poivre et sel)
     - Protection contre les injections SQL et les attaques XSS.
-
-### Déploiement
-- Le projet est actuellement hébergé sur le serveur de l'université, accessible via un sous-domaine IUT.
-
-### Collaboration et Versioning
-- **Git** pour le contrôle de version et la gestion du code source.
-- **GitLab** pour le partage du code, la collaboration et le suivi des problèmes (issues) et des fonctionnalités (features).

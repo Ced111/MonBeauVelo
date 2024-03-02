@@ -15,7 +15,7 @@ class ControleurUtilisateur extends ControleurGenerique {
     public static function afficherListe() : void {
         if (!ConnexionUtilisateur::estAdministrateur()) {
             MessageFlash::ajouter('danger', "Vous n'avez pas l'autorisation d'accéder à la liste des utilisateurs.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=produit&action=afficherListe');
+            ControleurGenerique::redirectionVersURL('controleur=produit&action=afficherListe');
             return;
         }
         $utilisateurRepository = new UtilisateurRepository();
@@ -39,7 +39,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         if (!isset($_REQUEST['idUtilisateur'])) {
             MessageFlash::ajouter('danger', "ID utilisateur manquant.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
@@ -48,13 +48,13 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         if (!$utilisateur) {
             MessageFlash::ajouter('danger', "ID utilisateur inconnu.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
         if (!ConnexionUtilisateur::estUtilisateur($idUtilisateur) && !ConnexionUtilisateur::estAdministrateur()) {
             MessageFlash::ajouter('danger', "La mise à jour n’est possible que pour l’utilisateur connecté ou pour l'administrateur.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
@@ -72,7 +72,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         // Vérifie si un utilisateur est déjà connecté
         if (\App\MonBeauVelo\Lib\ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter('danger', "Un utilisateur est déjà connecté. Veuillez d'abord vous déconnecter.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
@@ -88,7 +88,7 @@ class ControleurUtilisateur extends ControleurGenerique {
                 ]);
             } else {
                 MessageFlash::ajouter('danger', "Utilisateur demandé n'existe pas.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             // Affiche simplement le formulaire de connexion sans pré-remplir les champs
@@ -106,7 +106,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         // Vérification si email et mot de passe sont présents dans le query string
         if (!isset($_REQUEST['email']) || !isset($_REQUEST['motDePasse'])) {
             MessageFlash::ajouter('danger', 'Email et/ou mot de passe manquant.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion&controleur=utilisateur');
             return;
         }
 
@@ -119,21 +119,21 @@ class ControleurUtilisateur extends ControleurGenerique {
         // Vérification si l'utilisateur existe
         if (!$utilisateur) {
             MessageFlash::ajouter('warning', 'Email inconnu.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion&controleur=utilisateur');
             return;
         }
 
         // Vérification si le mot de passe est correct
         if (!MotDePasse::verifier($password, $utilisateur->getMdpHache())) {
             MessageFlash::ajouter('warning', 'Mot de passe incorrect.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion&controleur=utilisateur');
             return;
         }
 
         // Vérification si l'utilisateur a validé un email
         if (!VerificationEmail::aValideEmail($utilisateur)) {
             MessageFlash::ajouter('danger', 'Vous devez valider votre email avant de pouvoir vous connecter.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion&controleur=utilisateur');
             return;
         }
 
@@ -159,14 +159,14 @@ class ControleurUtilisateur extends ControleurGenerique {
         } else {
             MessageFlash::ajouter('success', 'Utilisateur connecté.');
         }
-        ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+        ControleurGenerique::redirectionVersURL('action=afficherListe');
     }
 
 
     public static function deconnecter() {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter('danger', "Aucun utilisateur n'est connecté.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
@@ -177,7 +177,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         } else {
             MessageFlash::ajouter('success', "Utilisateur déconnecté.");
         }
-        ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+        ControleurGenerique::redirectionVersURL('action=afficherListe');
     }
 
 
@@ -188,7 +188,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             // Si l'utilisateur connecté n'est pas administrateur et essaye de mettre à jour un autre utilisateur
             if (!$utilisateurConnecteEstAdmin && !ConnexionUtilisateur::estUtilisateur($_REQUEST['idUtilisateur'])) {
                 MessageFlash::ajouter('danger', "La prise en compte de la mise à jour n’est possible que pour l’utilisateur connecté.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -199,14 +199,14 @@ class ControleurUtilisateur extends ControleurGenerique {
 
             if (!$utilisateurOriginal) {
                 MessageFlash::ajouter('danger', "Utilisateur inexistant.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
             // Vérification du format de l'email
             if (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
                 MessageFlash::ajouter('danger', "Adresse email invalide.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -224,13 +224,13 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (!$utilisateurConnecteEstAdmin) {
                 if (!MotDePasse::verifier($_REQUEST['mdp_old'], $utilisateurOriginal->getMdpHache())) {
                     MessageFlash::ajouter('warning', "Ancien mot de passe erroné.");
-                    ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireMiseAJour&idUtilisateur=' . $_REQUEST['idUtilisateur']);
+                    ControleurGenerique::redirectionVersURL('action=afficherFormulaireMiseAJour&idUtilisateur=' . $_REQUEST['idUtilisateur']);
                     return;
                 }
 
                 if ($_REQUEST['mdp'] !== $_REQUEST['mdp2']) {
                     MessageFlash::ajouter('warning', "Les nouveaux mots de passe ne correspondent pas.");
-                    ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireMiseAJour&idUtilisateur=' . $_REQUEST['idUtilisateur']);
+                    ControleurGenerique::redirectionVersURL('action=afficherFormulaireMiseAJour&idUtilisateur=' . $_REQUEST['idUtilisateur']);
                     return;
                 }
 
@@ -247,10 +247,10 @@ class ControleurUtilisateur extends ControleurGenerique {
 
             if ($utilisateurRepository->mettreAJour($utilisateurMiseAJour)) {
                 MessageFlash::ajouter('success', "Utilisateur mis à jour avec succès.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=utilisateur&action=afficherDetail&idUtilisateur=' . $_REQUEST['idUtilisateur']);
+                ControleurGenerique::redirectionVersURL('controleur=utilisateur&action=afficherDetail&idUtilisateur=' . $_REQUEST['idUtilisateur']);
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la mise à jour de l'utilisateur.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         }
     }
@@ -262,14 +262,14 @@ class ControleurUtilisateur extends ControleurGenerique {
             // Vérifier si les deux mots de passe coïncident
             if ($_REQUEST['mdp'] !== $_REQUEST['mdp2']) {
                 MessageFlash::ajouter('warning', 'Mots de passe distincts.');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireCreation');
+                ControleurGenerique::redirectionVersURL('controleur=Utilisateur&action=afficherFormulaireCreation');
                 return;
             }
 
             // Vérifier si l'adresse email est valide
             if (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
                 MessageFlash::ajouter('danger', 'Adresse email invalide.');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireCreation');
+                ControleurGenerique::redirectionVersURL('controleur=Utilisateur&action=afficherFormulaireCreation');
                 return;
             }
 
@@ -277,7 +277,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             $utilisateurRepository = new UtilisateurRepository();
             if ($utilisateurRepository->emailEstDejaUtilise($_REQUEST['email'])) {
                 MessageFlash::ajouter('danger', 'Adresse email déjà utilisée.');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireCreation');
+                ControleurGenerique::redirectionVersURL('controleur=Utilisateur&action=afficherFormulaireCreation');
                 return;
             }
 
@@ -293,14 +293,14 @@ class ControleurUtilisateur extends ControleurGenerique {
             if ($utilisateurRepository->sauvegarder($nouvelUtilisateur)) {
                 VerificationEmail::envoiEmailValidation($nouvelUtilisateur);
                 MessageFlash::ajouter('success', 'Utilisateur créé avec succès. Un email de confirmation a été envoyé sur votre boîte mail.');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             } else {
                 MessageFlash::ajouter('danger', 'Erreur lors de la sauvegarde de l\'utilisateur.');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireCreation');
+                ControleurGenerique::redirectionVersURL('controleur=Utilisateur&action=afficherFormulaireCreation');
             }
         } else {
             MessageFlash::ajouter('danger', 'Données incomplètes.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Utilisateur&action=afficherFormulaireCreation');
+            ControleurGenerique::redirectionVersURL('controleur=Utilisateur&action=afficherFormulaireCreation');
         }
     }
 
@@ -315,11 +315,11 @@ class ControleurUtilisateur extends ControleurGenerique {
                 ControleurUtilisateur::afficherDetail($idUtilisateur);
             } else {
                 MessageFlash::ajouter('danger', "Échec de la validation de l'email.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             MessageFlash::ajouter('danger', "Données incomplètes pour la validation de l'email.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -331,7 +331,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             // Vérifiez si l'utilisateur connecté est celui que l'on souhaite supprimer
             if (!ConnexionUtilisateur::estUtilisateur($idUtilisateur)) {
                 MessageFlash::ajouter('danger', "La suppression n’est possible que pour l’utilisateur connecté.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -339,14 +339,14 @@ class ControleurUtilisateur extends ControleurGenerique {
 
             if ($repository->supprimer($idUtilisateur)) {
                 MessageFlash::ajouter('success', "L'utilisateur a bien été supprimé !");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la suppression de l'utilisateur.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             MessageFlash::ajouter('danger', "ID Utilisateur manquant.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -358,7 +358,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
             if ($idUtilisateur === false) {
                 MessageFlash::ajouter('danger', 'ID Utilisateur invalide.');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -369,7 +369,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             // Si aucun utilisateur trouvé, redirigez vers la liste avec un message flash
             if (!$utilisateur) {
                 MessageFlash::ajouter('warning', 'ID Utilisateur inconnu');
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
 
             // Si un utilisateur est trouvé, appelez la vue de détail avec le paramètre $utilisateur
@@ -381,7 +381,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             ]);
         } else {
             MessageFlash::ajouter('danger', 'ID Utilisateur non fourni.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 

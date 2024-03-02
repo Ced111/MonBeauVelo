@@ -3,6 +3,7 @@ namespace App\MonBeauVelo\Configuration;
 
 class ConfigurationSite {
     const DUREE_EXPIRATION = 1800; // Durée d'expiration en secondes (30 minutes ici)
+    public static $baseUrl = 'controleurFrontal.php?';
 
     public static function getURLAbsolue(): string {
         // return 'http://localhost/td-php/ProjetPHP/web/controleurFrontal.php';

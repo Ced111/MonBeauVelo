@@ -2,10 +2,9 @@
 
 namespace App\MonBeauVelo\Controleur;
 
+use App\MonBeauVelo\Configuration\ConfigurationSite;
 use App\MonBeauVelo\Lib\MessageFlash;
 use App\MonBeauVelo\Lib\PreferenceControleur;
-use App\MonBeauVelo\Modele\HTTP\Session;
-use App\MonBeauVelo\Modele\HTTP\Cookie;
 
 class ControleurGenerique {
 
@@ -40,16 +39,16 @@ class ControleurGenerique {
             PreferenceControleur::enregistrer($preference);
 
             MessageFlash::ajouter('success', 'Votre préférence est enregistrée !');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php');
+            ControleurGenerique::redirectionVersURL();
         } else {
             MessageFlash::ajouter('danger', 'Erreur lors de l’enregistrement de la préférence.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php');
+            ControleurGenerique::redirectionVersURL();
         }
     }
 
 
-    public static function redirectionVersURL(string $url) {
-        header("Location: $url");
+    public static function redirectionVersURL(string $url = '') {
+        header("Location: " . ConfigurationSite::$baseUrl . $url);
         exit();
     }
 

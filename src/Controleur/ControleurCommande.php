@@ -16,7 +16,7 @@ class ControleurCommande extends ControleurGenerique {
     public static function afficherListe() : void {
         if (!ConnexionUtilisateur::estAdministrateur()) {
             MessageFlash::ajouter('danger', "Vous n'avez pas l'autorisation d'accéder à la liste de toutes les commandes.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
         $commandeRepository = new CommandeRepository();
@@ -81,7 +81,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if (empty($detailsPanier)) {
             MessageFlash::ajouter('info', 'Votre panier est vide.');
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
@@ -107,11 +107,11 @@ class ControleurCommande extends ControleurGenerique {
                 ]);
             } else {
                 MessageFlash::ajouter('danger', "La commande demandée n'existe pas.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             MessageFlash::ajouter('danger', "ID manquante.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -120,7 +120,7 @@ class ControleurCommande extends ControleurGenerique {
         // Récupérer le produit et vérifier la validité
         if (!isset($_REQUEST['idProduit']) || !is_numeric($_REQUEST['idProduit'])) {
             MessageFlash::ajouter('danger', "Produit invalide.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
         $idProduit = (int)$_REQUEST['idProduit'];
@@ -129,14 +129,14 @@ class ControleurCommande extends ControleurGenerique {
 
         if (!$produit) {
             MessageFlash::ajouter('danger', "Produit non trouvé.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
         // Vérifier le stock disponible
         if ($produit->getStock() <= 0) {
             MessageFlash::ajouter('danger', "Stock épuisé pour ce produit.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherDetail&idProduit=' . $idProduit);
+            ControleurGenerique::redirectionVersURL('action=afficherDetail&idProduit=' . $idProduit);
             return;
         }
 
@@ -144,7 +144,7 @@ class ControleurCommande extends ControleurGenerique {
         $quantite = $_REQUEST['quantite'] ?? 1;
         if (!is_numeric($quantite) || $quantite <= 0) {
             MessageFlash::ajouter('danger', "Quantité invalide.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherDetail&idProduit=' . $idProduit);
+            ControleurGenerique::redirectionVersURL('action=afficherDetail&idProduit=' . $idProduit);
             return;
         }
         $quantite = (int)$quantite;
@@ -169,7 +169,7 @@ class ControleurCommande extends ControleurGenerique {
                 MessageFlash::ajouter('danger', "Erreur lors de l'ajout du produit au panier.");
             }
         }
-        ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Produit&action=afficherDetail&idProduit=' . $idProduit);
+        ControleurGenerique::redirectionVersURL('controleur=Produit&action=afficherDetail&idProduit=' . $idProduit);
     }
 
     public static function mettreAJour(): void {
@@ -179,7 +179,7 @@ class ControleurCommande extends ControleurGenerique {
 
             if (!$commandeOriginal) {
                 MessageFlash::ajouter('danger', "Commande inexistante.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -187,14 +187,14 @@ class ControleurCommande extends ControleurGenerique {
 
             if ($commandeRepository->mettreAJour($commandeMiseAJour)) {
                 MessageFlash::ajouter('success', "Commande mise à jour avec succès.");
-                ControleurGenerique::redirectionVersURL("controleurFrontal.php?controleur=commande&action=afficherDetail&idCommande=" . $_REQUEST['idCommande']);
+                ControleurGenerique::redirectionVersURL("controleur=commande&action=afficherDetail&idCommande=" . $_REQUEST['idCommande']);
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la mise à jour de la commande.");
-                ControleurGenerique::redirectionVersURL("controleurFrontal.php?controleur=commande&action=afficherDetail&idCommande=" . $_REQUEST['idCommande']);
+                ControleurGenerique::redirectionVersURL("controleur=commande&action=afficherDetail&idCommande=" . $_REQUEST['idCommande']);
             }
         } else {
             MessageFlash::ajouter('danger', "Données incomplètes pour la mise à jour.");
-            ControleurGenerique::redirectionVersURL("controleurFrontal.php?controleur=commande&action=afficherDetail&idCommande=" . $_REQUEST['idCommande']);
+            ControleurGenerique::redirectionVersURL("controleur=commande&action=afficherDetail&idCommande=" . $_REQUEST['idCommande']);
         }
     }
 
@@ -207,7 +207,7 @@ class ControleurCommande extends ControleurGenerique {
 
             if ($quantite < 0) {
                 MessageFlash::ajouter('danger', "La quantité ne peut pas être négative.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherPanier&controleur=commande');
+                ControleurGenerique::redirectionVersURL('action=afficherPanier&controleur=commande');
                 return;
             }
 
@@ -216,7 +216,7 @@ class ControleurCommande extends ControleurGenerique {
 
             if ($produit === null || $quantite > $produit->getStock()) {
                 MessageFlash::ajouter('danger', "Quantité demandée non disponible en stock.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherPanier&controleur=commande');
+                ControleurGenerique::redirectionVersURL('action=afficherPanier&controleur=commande');
                 return;
             }
 
@@ -231,7 +231,7 @@ class ControleurCommande extends ControleurGenerique {
                         // Supprimer la commande entière si c'était le dernier produit
                         $commandeRepository->supprimer($idCommande);
                         MessageFlash::ajouter('success', "Le produit et la commande ont été supprimés.");
-                        ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Produit&action=afficherListe');
+                        ControleurGenerique::redirectionVersURL('controleur=Produit&action=afficherListe');
                         return;
                     } else {
                         MessageFlash::ajouter('success', "Produit supprimé du panier.");
@@ -248,10 +248,10 @@ class ControleurCommande extends ControleurGenerique {
                     MessageFlash::ajouter('danger', "Erreur lors de la modification de la quantité.");
                 }
             }
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherPanier&controleur=commande');
+            ControleurGenerique::redirectionVersURL('action=afficherPanier&controleur=commande');
         } else {
             MessageFlash::ajouter('danger', "Données incomplètes pour la modification de la quantité.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherPanier&controleur=commande');
+            ControleurGenerique::redirectionVersURL('action=afficherPanier&controleur=commande');
         }
     }
 
@@ -272,7 +272,7 @@ class ControleurCommande extends ControleurGenerique {
             MessageFlash::ajouter('danger', 'Informations manquantes pour mettre à jour la quantité.');
         }
 
-        ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+        ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
     }
 
 
@@ -283,14 +283,14 @@ class ControleurCommande extends ControleurGenerique {
 
             if ($repository->supprimer($idCommande)) {
                 MessageFlash::ajouter('success', "La commande a bien été supprimée !");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             } else {
                 MessageFlash::ajouter('danger', "Erreur lors de la suppression de la commande.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
             }
         } else {
             MessageFlash::ajouter('danger', "ID commande manquant.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
@@ -299,7 +299,7 @@ class ControleurCommande extends ControleurGenerique {
         $idUtilisateur = ConnexionUtilisateur::getIdUtilisateurConnecte();
         if (!$idUtilisateur) {
             MessageFlash::ajouter('danger', "Vous devez être connecté pour supprimer un produit du panier.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion');
             return;
         }
 
@@ -308,7 +308,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if ($idCommande === null || $idProduit === null) {
             MessageFlash::ajouter('danger', "Informations manquantes pour supprimer le produit du panier.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
             return;
         }
 
@@ -321,14 +321,14 @@ class ControleurCommande extends ControleurGenerique {
                 $commandeRepository = new CommandeRepository();
                 $commandeRepository->supprimer($idCommande);
                 MessageFlash::ajouter('success', "Produit et commande supprimés avec succès.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Produit&action=afficherListe');
+                ControleurGenerique::redirectionVersURL('controleur=Produit&action=afficherListe');
                 return;
             }
             MessageFlash::ajouter('success', "Produit supprimé du panier avec succès.");
         } else {
             MessageFlash::ajouter('danger', "Erreur lors de la suppression du produit du panier.");
         }
-        ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+        ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
     }
 
 
@@ -344,14 +344,14 @@ class ControleurCommande extends ControleurGenerique {
             MessageFlash::ajouter('danger', 'Informations manquantes pour supprimer le produit.');
         }
 
-        ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+        ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
     }
 
 
     public static function payer(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter('danger', "Vous devez être connecté pour effectuer cette action.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion');
             return;
         }
 
@@ -361,7 +361,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if (!$panier) {
             MessageFlash::ajouter('danger', "Votre panier est vide.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
             return;
         }
 
@@ -383,7 +383,7 @@ class ControleurCommande extends ControleurGenerique {
     public static function traiterPaiementFictif(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter('danger', "Vous devez être connecté pour valider un paiement.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion');
             return;
         }
 
@@ -392,7 +392,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if (!$idCommande) {
             MessageFlash::ajouter('danger', "Aucune commande à finaliser.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
             return;
         }
 
@@ -401,7 +401,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if ($panier === null) {
             MessageFlash::ajouter('danger', "La commande n'a pas été trouvée.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
             return;
         }
 
@@ -413,10 +413,10 @@ class ControleurCommande extends ControleurGenerique {
             $panier->setStatut('payée');
             $commandeRepository->mettreAJour($panier);
             MessageFlash::ajouter('success', "Paiement accepté !");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherRecus&idCommande=' . $idCommande);
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherRecus&idCommande=' . $idCommande);
         } else {
             MessageFlash::ajouter('danger', "Le paiement n'a pas pu être enregistré.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
         }
     }
 
@@ -424,7 +424,7 @@ class ControleurCommande extends ControleurGenerique {
     public static function afficherRecus() {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter('danger', "Vous devez être connecté pour accéder à cette page.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherFormulaireConnexion');
+            ControleurGenerique::redirectionVersURL('action=afficherFormulaireConnexion');
             return;
         }
 
@@ -432,7 +432,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if (!$idCommande) {
             MessageFlash::ajouter('danger', "Aucune commande spécifiée.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
             return;
         }
 
@@ -441,7 +441,7 @@ class ControleurCommande extends ControleurGenerique {
 
         if ($commande === null) {
             MessageFlash::ajouter('danger', "La commande n'a pas été trouvée.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?controleur=Commande&action=afficherPanier');
+            ControleurGenerique::redirectionVersURL('controleur=Commande&action=afficherPanier');
             return;
         }
 
@@ -461,7 +461,7 @@ class ControleurCommande extends ControleurGenerique {
 
             if (!$commande) {
                 MessageFlash::ajouter('danger', "Aucune commande trouvée avec cet ID.");
-                ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+                ControleurGenerique::redirectionVersURL('action=afficherListe');
                 return;
             }
 
@@ -476,7 +476,7 @@ class ControleurCommande extends ControleurGenerique {
             ]);
         } else {
             MessageFlash::ajouter('danger', "ID commande non fourni.");
-            ControleurGenerique::redirectionVersURL('controleurFrontal.php?action=afficherListe');
+            ControleurGenerique::redirectionVersURL('action=afficherListe');
         }
     }
 
