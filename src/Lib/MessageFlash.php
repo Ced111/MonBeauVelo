@@ -1,16 +1,13 @@
 <?php
 namespace App\MonBeauVelo\Lib;
 
-class MessageFlash {
+use App\MonBeauVelo\Modele\HTTP\Session;
 
-    // Les messages sont enregistrés en session associée à la clé suivante
+class MessageFlash {
     private static string $cleFlash = "_messagesFlash";
 
-    // $type parmi "success", "info", "warning" ou "danger"
     public static function ajouter(string $type, string $message): void {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
+        $session = Session::getInstance();
         if (!isset($_SESSION[self::$cleFlash])) {
             $_SESSION[self::$cleFlash] = [];
         }
@@ -23,29 +20,21 @@ class MessageFlash {
     }
 
     public static function contientMessage(string $type): bool {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
+        $session = Session::getInstance();
         return isset($_SESSION[self::$cleFlash][$type]) && count($_SESSION[self::$cleFlash][$type]) > 0;
     }
 
-    // Attention : la lecture doit détruire le message
     public static function lireMessages(string $type): array {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
+        $session = Session::getInstance();
         $messages = $_SESSION[self::$cleFlash][$type] ?? [];
         unset($_SESSION[self::$cleFlash][$type]);
         return $messages;
     }
 
     public static function lireTousMessages() : array {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
+        $session = Session::getInstance();
         $allMessages = $_SESSION[self::$cleFlash] ?? [];
         unset($_SESSION[self::$cleFlash]);
         return $allMessages;
     }
 }
-?>
